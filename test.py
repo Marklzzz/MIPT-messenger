@@ -34,9 +34,7 @@ class TextInputBox(pygame.sprite.Sprite):
                 if self.active and self.text == self.inactive_text:
                     self.text = ''
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_RETURN:
-                    Result[self.inactive_text]=self.text
-                elif event.key == pygame.K_BACKSPACE and self.active:
+                if event.key == pygame.K_BACKSPACE and self.active:
                     self.text = self.text[:-1]
                 else:
                     if self.active and event.unicode in 'qazwsxedcrfvtgbyhnujmikolp.@_QAZWSXEDCRFVTGBYHNUJMIKOLP':
@@ -45,32 +43,4 @@ class TextInputBox(pygame.sprite.Sprite):
                 self.render_text()
 
 
-pygame.init()
-window = pygame.display.set_mode((500, 200))
-clock = pygame.time.Clock()
-font = pygame.font.SysFont(None, 40)
 
-displayname_box = TextInputBox(50, 50, 400, font, 'Displayname')
-email_box = TextInputBox(50,80,400,font, 'Email')
-pwd_box = TextInputBox(50,110,400,font,'Password')
-group = pygame.sprite.Group(displayname_box)
-group.add(email_box)
-group.add(pwd_box)
-
-Result = {}
-
-run = True
-while run:
-    clock.tick(60)
-    event_list = pygame.event.get()
-    for event in event_list:
-        if event.type == pygame.QUIT:
-            run = False
-    group.update(event_list, Result)
-
-    window.fill(0)
-    group.draw(window)
-    pygame.display.flip()
-
-pygame.quit()
-exit()

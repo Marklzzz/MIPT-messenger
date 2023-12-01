@@ -2,7 +2,7 @@ import pygame
 
 
 class TextInputBox(pygame.sprite.Sprite):
-    def __init__(self, x, y, w, font):
+    def __init__(self, x, y, w, font, inac):
         super().__init__()
         self.color = (255, 255, 255)
         self.backcolor = None
@@ -10,7 +10,8 @@ class TextInputBox(pygame.sprite.Sprite):
         self.width = w
         self.font = font
         self.active = False
-        self.text = ""
+        self.text = inac
+        self.inactive_text = inac
         self.render_text()
 
     def render_text(self):
@@ -24,9 +25,13 @@ class TextInputBox(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft=self.pos)
 
     def update(self, event_list):
+        if not self.active and self.text == '':
+            self.text = self.inactive_text
         for event in event_list:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 self.active = self.rect.collidepoint(event.pos)
+                if self.active and self.text == self.inactive_text:
+                    self.text = ''
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     print(self.text)
@@ -43,10 +48,12 @@ window = pygame.display.set_mode((500, 200))
 clock = pygame.time.Clock()
 font = pygame.font.SysFont(None, 40)
 
-text_input_box = TextInputBox(50, 50, 400, font)
-text_input_box2 = TextInputBox(50,80,400,font)
-group = pygame.sprite.Group(text_input_box)
-group.add(text_input_box2)
+displayname_box = TextInputBox(50, 50, 400, font, 'Displayname')
+email_box = TextInputBox(50,80,400,font, 'Email')
+pwd_box = TextInputBox(50,110,400,font,'Password')
+group = pygame.sprite.Group(displayname_box)
+group.add(email_box)
+group.add(pwd_box)
 
 
 run = True

@@ -1,6 +1,5 @@
 import pygame
 
-
 class TextInputBox(pygame.sprite.Sprite):
     def __init__(self, x, y, w, font, inac):
         super().__init__()
@@ -24,7 +23,7 @@ class TextInputBox(pygame.sprite.Sprite):
         pygame.draw.rect(self.image, self.color, self.image.get_rect().inflate(-2, -2), 2)
         self.rect = self.image.get_rect(topleft=self.pos)
 
-    def update(self, event_list):
+    def update(self, event_list, Result):
         if not self.active and self.text == '':
             self.text = self.inactive_text
         for event in event_list:
@@ -36,7 +35,7 @@ class TextInputBox(pygame.sprite.Sprite):
                     self.text = ''
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
-                    print(self.text)
+                    Result[self.inactive_text]=self.text
                 elif event.key == pygame.K_BACKSPACE and self.active:
                     self.text = self.text[:-1]
                 else:
@@ -58,6 +57,7 @@ group = pygame.sprite.Group(displayname_box)
 group.add(email_box)
 group.add(pwd_box)
 
+Result = {}
 
 run = True
 while run:
@@ -66,7 +66,7 @@ while run:
     for event in event_list:
         if event.type == pygame.QUIT:
             run = False
-    group.update(event_list)
+    group.update(event_list, Result)
 
     window.fill(0)
     group.draw(window)

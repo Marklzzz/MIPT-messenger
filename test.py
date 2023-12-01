@@ -48,6 +48,7 @@ text_input_box2 = TextInputBox(50,80,400,font)
 group = pygame.sprite.Group(text_input_box)
 group.add(text_input_box2)
 
+
 run = True
 while run:
     clock.tick(60)

@@ -25,15 +25,15 @@ class TextInputBox(pygame.sprite.Sprite):
 
     def update(self, event_list):
         for event in event_list:
-            if event.type == pygame.MOUSEBUTTONDOWN and not self.active:
+            if event.type == pygame.MOUSEBUTTONDOWN:
                 self.active = self.rect.collidepoint(event.pos)
-            if event.type == pygame.KEYDOWN and self.active:
+            if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     print(self.text)
-                elif event.key == pygame.K_BACKSPACE:
+                elif event.key == pygame.K_BACKSPACE and self.active:
                     self.text = self.text[:-1]
                 else:
-                    if event.unicode in 'qazwsxedcrfvtgbyhnujmikolp.@_QAZWSXEDCRFVTGBYHNUJMIKOLP':
+                    if self.active and event.unicode in 'qazwsxedcrfvtgbyhnujmikolp.@_QAZWSXEDCRFVTGBYHNUJMIKOLP':
                         self.text += event.unicode
                 self.render_text()
 
@@ -44,7 +44,9 @@ clock = pygame.time.Clock()
 font = pygame.font.SysFont(None, 40)
 
 text_input_box = TextInputBox(50, 50, 400, font)
+text_input_box2 = TextInputBox(50,80,400,font)
 group = pygame.sprite.Group(text_input_box)
+group.add(text_input_box2)
 
 run = True
 while run:

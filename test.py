@@ -29,6 +29,8 @@ class TextInputBox(pygame.sprite.Sprite):
             self.text = self.inactive_text
         for event in event_list:
             if event.type == pygame.MOUSEBUTTONDOWN:
+                if not self.active and self.text == '':
+                    self.text = self.inactive_text
                 self.active = self.rect.collidepoint(event.pos)
                 if self.active and self.text == self.inactive_text:
                     self.text = ''
@@ -40,6 +42,7 @@ class TextInputBox(pygame.sprite.Sprite):
                 else:
                     if self.active and event.unicode in 'qazwsxedcrfvtgbyhnujmikolp.@_QAZWSXEDCRFVTGBYHNUJMIKOLP':
                         self.text += event.unicode
+
                 self.render_text()
 
 
